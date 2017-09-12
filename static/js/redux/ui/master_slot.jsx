@@ -16,7 +16,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ClickOutHandler from 'react-onclickout';
 import uniq from 'lodash/uniq';
-import Clipboard from 'clipboard';
 import COLOUR_DATA from '../constants/colours';
 import * as SemesterlyPropTypes from '../constants/semesterlyPropTypes';
 
@@ -54,11 +53,6 @@ class MasterSlot extends React.Component {
   }
   showShareLink() {
     this.setState({ shareLinkShown: true });
-    const idEventTarget = `#clipboard-btn-course-${this.props.course.id}`;
-    const clipboard = new Clipboard(idEventTarget);
-    clipboard.on('success', () => {
-      $(idEventTarget).addClass('clipboardSuccess').text('Copied!');
-    });
   }
   hideShareLink() {
     this.setState({ shareLinkShown: false });
@@ -103,10 +97,8 @@ class MasterSlot extends React.Component {
     const profDisp = this.props.professors === null ? null : <h3>{ prof }</h3>;
     const shareLink = this.state.shareLinkShown ?
             (<ShareLink
-              uniqueId={`course-${this.props.course.id}`}
               link={this.props.getShareLink(this.props.course.code)}
               onClickOut={this.hideShareLink}
-              type="Course"
             />) :
             null;
     let waitlistOnlyFlag = null;
@@ -203,11 +195,9 @@ MasterSlot.propTypes = {
   getShareLink: PropTypes.func.isRequired,
 };
 
-export const ShareLink = ({ link, onClickOut, uniqueId, type }) => (
+export const ShareLink = ({ link, onClickOut }) => (
   <ClickOutHandler onClickOut={onClickOut}>
-    <div className="share-course-link-wrapper" onClick={e => e.stopPropagation()}>
-      <h5>Share {type}</h5>
-      <h6>Copy the link below and send it to a friend/advisor!</h6>
+    <div className="share-course-link-wrapper">
       <div className="tip-border" />
       <div className="tip" />
       <input
@@ -218,9 +208,6 @@ export const ShareLink = ({ link, onClickOut, uniqueId, type }) => (
         onFocus={e => e.target.select()}
         readOnly
       />
-      <div className="clipboardBtn" id={`clipboard-btn-${uniqueId}`} data-clipboard-text={link}>
-        Copy to Clipboard
-      </div>
     </div>
   </ClickOutHandler>
 );
