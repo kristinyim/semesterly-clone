@@ -39,7 +39,7 @@
     "js-cookie": "^2.1.4",
     "kombu": "^0.2.0",
     "livereactload": "^3.2.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.21",
     "loose-envify": "^1.1.0",
     "moment": "^2.11.2",
     "nock": "^9.0.13",
